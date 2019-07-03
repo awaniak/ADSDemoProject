@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,6 +108,28 @@ public class ConferenceRepositoryTest {
         assertThat(optionalConference.isPresent(), is(false));
 
         conference = conferenceRepository.save(new Conference(CONFERENCE_TITLE, DESCRIPTION, DATE, PRIORITY, TYPE));
+    }
+
+    @Test
+    public void should_fetch_all_sorted_by_type_asc() {
+        List<Sort.Order> orders = Arrays.asList(new Sort.Order(Sort.Direction.ASC, ConferenceProperties.type.toString()));
+        List<Conference> conferences = conferenceRepository.findAll(Sort.by(orders));
+        assertThat(conferences.size(), is(2));
+        assertThat(conferences.get(0), is(conferenceToCompare));
+        assertThat(conferences.get(1), is(conference));
+    }
+
+    @Test
+    public void should_fetch_all_sorted_by_type_desc() {
+        List<Sort.Order> orders = Arrays.asList(new Sort.Order(Sort.Direction.DESC, ConferenceProperties.type.toString()));
+        List<Conference> conferences = conferenceRepository.findAll(Sort.by(orders));
+        assertThat(conferences.size(), is(2));
+        assertThat(conferences.get(0), is(conference));
+        assertThat(conferences.get(1), is(conferenceToCompare));
+    }
+
+    private enum ConferenceProperties {
+        title, description, conferenceDateTime, priority, type
     }
 
 }
