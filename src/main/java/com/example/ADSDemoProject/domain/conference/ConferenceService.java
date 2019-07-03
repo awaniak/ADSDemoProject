@@ -1,6 +1,7 @@
 package com.example.ADSDemoProject.domain.conference;
 
 
+import com.example.ADSDemoProject.utils.exception.InvalidRequestException;
 import com.example.ADSDemoProject.utils.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class ConferenceService {
     }
 
     public Conference save(Conference conference) {
+        if (!conferenceRepository.findByConferenceDateTime(conference.getConferenceDateTime()).isEmpty()) {
+            throw new InvalidRequestException("Conference with given time already exists");
+        }
         return conferenceRepository.save(conference);
     }
 
@@ -35,7 +39,11 @@ public class ConferenceService {
     }
 
     public List<Conference> findAllConferenceWithCriteria(List<Sort.Order> orders) {
-        return conferenceRepository.findAll(Sort.by(orders));
+        if (orders == null){
+            return conferenceRepository.findAll();
+        }else {
+            return conferenceRepository.findAll(Sort.by(orders));
+        }
     }
 
 }
