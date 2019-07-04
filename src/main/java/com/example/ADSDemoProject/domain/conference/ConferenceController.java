@@ -42,4 +42,14 @@ public class ConferenceController {
         return conferenceService.edit(conference);
     }
 
+    @GetMapping("/types")
+    public ConferenceType[] getConferenceTypes() {
+        return conferenceService.getConferenceTypes();
+    }
+
+    @GetMapping("/priorities")
+    public ConferencePriority[] getConferencePriorities() {
+        return conferenceService.getConferencePriorities();
+    }
+
 }

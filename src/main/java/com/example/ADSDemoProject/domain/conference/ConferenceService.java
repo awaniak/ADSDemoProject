@@ -47,4 +47,11 @@ public class ConferenceService {
         }
     }
 
+    public ConferenceType[] getConferenceTypes() {
+        return ConferenceType.class.getEnumConstants();
+    }
+
+    public ConferencePriority[] getConferencePriorities() {
+        return ConferencePriority.class.getEnumConstants();
+    }
 }
