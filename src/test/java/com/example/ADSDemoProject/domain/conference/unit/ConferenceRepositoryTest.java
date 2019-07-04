@@ -100,6 +100,8 @@ public class ConferenceRepositoryTest {
 
         assertThat(optionalEditedConference.isPresent(), is(true));
         assertThat(optionalEditedConference.get(), is(editedConference));
+        assertThat(optionalEditedConference.get().getTitle(), is(editedConference.getTitle()));
+        assertThat(optionalEditedConference.get().getId(), is(editedConference.getId()));
 
         conference = conferenceRepository.save(conference);
 

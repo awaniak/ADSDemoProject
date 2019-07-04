@@ -89,6 +89,26 @@ public class ConferenceSearchTest {
         }
     }
 
+    @Test
+    public void should_return_one_conference() throws Exception {
+        Conference conferenceToReturn = mockedConferences.get(0);
+        MvcResult result = mvc.perform(
+                get(url + "/" + conferenceToReturn.getId()))
+                .andExpect(status().isOk()).andDo(print()).andReturn();
+        Conference conference = objectMapper.readValue(result.getResponse().getContentAsString(), Conference.class);
+        Assert.assertEquals(conference.getTitle(), conferenceToReturn.getTitle());
+        Assert.assertEquals(conference.getId(), conferenceToReturn.getId());
+        Assert.assertEquals(conference.getPriority(), conferenceToReturn.getPriority());
+        Assert.assertEquals(conference.getType(), conferenceToReturn.getType());
+    }
+
+    @Test
+    public void should_not_return_not_existing_conference() throws Exception {
+        mvc.perform(
+                get(url + "/-1"))
+                .andExpect(status().isNotFound()).andDo(print());
+    }
+
     private void should_return_all_conferences_sorted_by_given_properties_and_order(String property, Sort.Direction direction) throws Exception{
         MvcResult result = mvc.perform(
                 get(url)

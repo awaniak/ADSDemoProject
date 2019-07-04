@@ -35,8 +35,8 @@ public class ConferenceService {
     }
 
     public Conference edit(Conference conference){
-        Conference conferenceToEdit = conferenceRepository.findById(conference.getId()).orElseThrow(ResourceNotFoundException::new);
-        return conferenceRepository.save(conferenceToEdit);
+        conferenceRepository.findById(conference.getId()).orElseThrow(ResourceNotFoundException::new);
+        return conferenceRepository.save(conference);
     }
 
     public List<Conference> findAllConferenceWithCriteria(Sort sort) {

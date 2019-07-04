@@ -22,6 +22,11 @@ public class ConferenceController {
         return conferenceService.findAllConferenceWithCriteria(sort);
     }
 
+    @GetMapping("/{conferenceId}")
+    public Conference getConference(@PathVariable long conferenceId) {
+        return conferenceService.findById(conferenceId);
+    }
+
     @PostMapping
     public Conference addConference(@RequestBody Conference conference) {
         return conferenceService.save(conference);
@@ -30,6 +35,11 @@ public class ConferenceController {
     @DeleteMapping("/{conferenceId}")
     public void deleteConference(@PathVariable long conferenceId) {
         conferenceService.deleteById(conferenceId);
+    }
+
+    @PutMapping
+    public Conference editConference(@RequestBody Conference conference) {
+        return conferenceService.edit(conference);
     }
 
 }
