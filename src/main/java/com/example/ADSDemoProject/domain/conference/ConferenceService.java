@@ -3,6 +3,7 @@ package com.example.ADSDemoProject.domain.conference;
 
 import com.example.ADSDemoProject.utils.exception.InvalidRequestException;
 import com.example.ADSDemoProject.utils.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +39,11 @@ public class ConferenceService {
         return conferenceRepository.save(conferenceToEdit);
     }
 
-    public List<Conference> findAllConferenceWithCriteria(List<Sort.Order> orders) {
-        if (orders == null){
+    public List<Conference> findAllConferenceWithCriteria(Sort sort) {
+        if (sort == null){
             return conferenceRepository.findAll();
         }else {
-            return conferenceRepository.findAll(Sort.by(orders));
+            return conferenceRepository.findAll(sort);
         }
     }
 

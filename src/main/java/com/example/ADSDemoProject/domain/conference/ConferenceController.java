@@ -2,7 +2,6 @@ package com.example.ADSDemoProject.domain.conference;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,8 +16,8 @@ public class ConferenceController {
     }
 
     @GetMapping()
-    public List<Conference> getAllConferences(@RequestParam(required = false) List<Sort.Order>  orders) {
-        return conferenceService.findAllConferenceWithCriteria(orders);
+    public List<Conference> getAllConferences(Sort sort) {
+        return conferenceService.findAllConferenceWithCriteria(sort);
     }
 
 }

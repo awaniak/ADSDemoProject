@@ -1,5 +1,9 @@
-package com.example.ADSDemoProject.domain.conference;
+package com.example.ADSDemoProject.domain.conference.unit;
 
+import com.example.ADSDemoProject.domain.conference.Conference;
+import com.example.ADSDemoProject.domain.conference.ConferencePriority;
+import com.example.ADSDemoProject.domain.conference.ConferenceRepository;
+import com.example.ADSDemoProject.domain.conference.ConferenceType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
