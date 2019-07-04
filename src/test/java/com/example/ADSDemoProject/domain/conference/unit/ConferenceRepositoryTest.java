@@ -63,6 +63,7 @@ public class ConferenceRepositoryTest {
     @After
     public void tearDown() throws Exception {
         conferenceRepository.delete(conference);
+        conferenceRepository.delete(conferenceToCompare);
     }
 
     @Test

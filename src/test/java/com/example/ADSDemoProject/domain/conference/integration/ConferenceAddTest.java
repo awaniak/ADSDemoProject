@@ -16,10 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,7 +35,7 @@ import java.util.stream.Collectors;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ConferenceSearchTest {
+public class ConferenceAddTest {
 
     @Autowired
     private MockMvc mvc;
@@ -68,38 +71,32 @@ public class ConferenceSearchTest {
     }
 
     @Test
-    public void should_return_all_conferences() throws Exception {
+    public void should_add_conference() throws Exception {
+        Conference conferenceToAdd = new Conference("hallo", "desc", ZonedDateTime.now(), ConferencePriority.NOT_IMPORTANT, ConferenceType.WORKSHOP);
+        long sizeBeforeAdd = conferenceRepository.count();
         MvcResult result = mvc.perform(
-                get(url))
-                .andExpect(status().isOk()).andDo(print()).andReturn();
-        List<Conference> conferenceList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Conference>>() {
-        });
-        Assert.assertFalse(conferenceList.isEmpty());
-        Assert.assertEquals(conferenceList.size(), conferenceRepository.count());
+                post(url).content(objectMapper.writeValueAsString(conferenceToAdd)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful()).andDo(print()).andReturn();
+        Conference addedConference = objectMapper.readValue(result.getResponse().getContentAsString(), Conference.class);
+        assertThat(sizeBeforeAdd + 1, is(conferenceRepository.count()));
+        Assert.assertEquals(conferenceToAdd.getTitle(), addedConference.getTitle());
+        Assert.assertEquals(conferenceToAdd.getDescription(), addedConference.getDescription());
+        Assert.assertEquals(conferenceToAdd.getPriority(), addedConference.getPriority());
+        Assert.assertEquals(conferenceToAdd.getType(), addedConference.getType());
+
+        conferenceRepository.delete(addedConference);
     }
 
     @Test
-    public void should_return_all_conferences_sorted_by_properties_and_directions() throws Exception {
-        List<String> properties = Arrays.asList("conferenceDateTime", "type", "priority");
-        List<Sort.Direction> directions = Arrays.asList(Sort.Direction.ASC, Sort.Direction.DESC);
-        for (String property : properties) {
-            for (Sort.Direction direction: directions) {
-                should_return_all_conferences_sorted_by_given_properties_and_order(property, direction);
-            }
-        }
-    }
-
-    private void should_return_all_conferences_sorted_by_given_properties_and_order(String property, Sort.Direction direction) throws Exception{
-        MvcResult result = mvc.perform(
-                get(url)
-                        .param("sort", property + "," + direction.toString()))
-
-                .andExpect(status().isOk()).andDo(print()).andReturn();
-        List<Conference> conferenceList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Conference>>() {
-        });
-
-        Assert.assertEquals(conferenceRepository.findAll(
-                new Sort(direction, Arrays.asList(property))).stream().map(Conference::getId).collect(Collectors.toList()),
-                conferenceList.stream().map(Conference::getId).collect(Collectors.toList()));
+    public void should_not_add_conference_with_same_date() throws Exception {
+        Conference conferenceToAdd = new Conference("hallo", "desc", ZonedDateTime.now(), ConferencePriority.NOT_IMPORTANT, ConferenceType.WORKSHOP);
+        long sizeBeforeAdd = conferenceRepository.count();
+        mvc.perform(
+                post(url).content(objectMapper.writeValueAsString(conferenceToAdd)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful()).andDo(print()).andReturn();
+        mvc.perform(
+                post(url).content(objectMapper.writeValueAsString(conferenceToAdd)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andDo(print()).andReturn();
+        assertThat(sizeBeforeAdd + 1, is(conferenceRepository.count()));
     }
 }
