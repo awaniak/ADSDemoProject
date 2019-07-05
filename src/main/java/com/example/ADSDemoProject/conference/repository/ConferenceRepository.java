@@ -1,4 +1,4 @@
-package com.example.ADSDemoProject.conference;
+package com.example.ADSDemoProject.conference.domain.repository;
 
 import com.example.ADSDemoProject.conference.domain.Conference;
 import org.springframework.data.jpa.repository.JpaRepository;
