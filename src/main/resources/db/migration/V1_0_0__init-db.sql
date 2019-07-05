@@ -26,3 +26,10 @@ create table conference
     constraint FKpeh1bq15oxrpmn15rr31kdh5r
         foreign key (type_id) references conference_type (id)
 );
+
+
+
+create table hibernate_sequence
+(
+    next_val bigint null
+);
