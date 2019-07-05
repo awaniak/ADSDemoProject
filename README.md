@@ -1,4 +1,4 @@
-[[codecov](https://codecov.io/gh/awaniak/ADSDemoProject/branch/master/graphs/badge.svg)](https://codecov.io/gh/awaniak/ADSDemoProject)
+[![codecov](https://codecov.io/gh/awaniak/ADSDemoProject/branch/master/graphs/badge.svg)](https://codecov.io/gh/awaniak/ADSDemoProject)
 
 [![Build Status](https://travis-ci.com/awaniak/ADSDemoProject.svg?branch=master)](https://travis-ci.com/awaniak/ADSDemoProject)
 
