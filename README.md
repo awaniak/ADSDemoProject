@@ -1,3 +1,5 @@
+[[codecov](https://codecov.io/gh/awaniak/ADSDemoProject/branch/master/graphs/badge.svg)](https://codecov.io/gh/awaniak/ADSDemoProject)
+
 [![Build Status](https://travis-ci.com/awaniak/ADSDemoProject.svg?branch=master)](https://travis-ci.com/awaniak/ADSDemoProject)
 
 Docs: http://localhost:8080/swagger-ui.html#/
