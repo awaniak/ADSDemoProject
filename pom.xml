@@ -108,10 +108,10 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>4.0.3</version>
 				<configuration>
-					<user>databaseUser</user>
-					<password>databasePassword</password>
+					<user>user_test</user>
+					<password>password</password>
 					<schemas>
-						<schema>schemaName</schema>
+						<schema>db</schema>
 					</schemas>
 
 				</configuration>
