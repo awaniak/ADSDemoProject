@@ -1,10 +1,10 @@
 package com.example.ADSDemoProject.domain.conference.integration;
 
 
-import com.example.ADSDemoProject.domain.conference.Conference;
-import com.example.ADSDemoProject.domain.conference.ConferencePriority;
+import com.example.ADSDemoProject.domain.conference.entity.Conference;
+import com.example.ADSDemoProject.domain.conference.entity.ConferencePriority;
 import com.example.ADSDemoProject.domain.conference.ConferenceRepository;
-import com.example.ADSDemoProject.domain.conference.ConferenceType;
+import com.example.ADSDemoProject.domain.conference.entity.ConferenceType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;

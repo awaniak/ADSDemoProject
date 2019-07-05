@@ -1,4 +1,4 @@
-package com.example.ADSDemoProject.domain.conference;
+package com.example.ADSDemoProject.domain.conference.entity;
 
 
 import lombok.Data;

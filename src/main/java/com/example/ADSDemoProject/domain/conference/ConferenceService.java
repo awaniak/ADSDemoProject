@@ -1,6 +1,9 @@
 package com.example.ADSDemoProject.domain.conference;
 
 
+import com.example.ADSDemoProject.domain.conference.entity.Conference;
+import com.example.ADSDemoProject.domain.conference.entity.ConferencePriority;
+import com.example.ADSDemoProject.domain.conference.entity.ConferenceType;
 import com.example.ADSDemoProject.utils.exception.InvalidRequestException;
 import com.example.ADSDemoProject.utils.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Sort;
