@@ -1,6 +1,6 @@
-package com.example.ADSDemoProject.domain.conference;
+package com.example.ADSDemoProject.conference;
 
-import com.example.ADSDemoProject.domain.conference.entity.Conference;
+import com.example.ADSDemoProject.conference.domain.Conference;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.ZonedDateTime;

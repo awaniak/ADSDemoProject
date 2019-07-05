@@ -1,4 +1,4 @@
-package com.example.ADSDemoProject.domain.conference.entity;
+package com.example.ADSDemoProject.conference.domain;
 
 public enum ConferencePriority {
     IMPORTANT, NOT_IMPORTANT

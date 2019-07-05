@@ -1,9 +1,9 @@
 package com.example.ADSDemoProject.utils;
 
-import com.example.ADSDemoProject.domain.conference.ConferenceRepository;
-import com.example.ADSDemoProject.domain.conference.entity.Conference;
-import com.example.ADSDemoProject.domain.conference.entity.ConferencePriority;
-import com.example.ADSDemoProject.domain.conference.entity.ConferenceType;
+import com.example.ADSDemoProject.conference.ConferenceRepository;
+import com.example.ADSDemoProject.conference.domain.Conference;
+import com.example.ADSDemoProject.conference.domain.ConferencePriority;
+import com.example.ADSDemoProject.conference.domain.ConferenceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

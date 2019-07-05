@@ -1,15 +1,16 @@
-package com.example.ADSDemoProject.domain.conference;
+package com.example.ADSDemoProject.conference;
 
 
-import com.example.ADSDemoProject.domain.conference.entity.Conference;
-import com.example.ADSDemoProject.domain.conference.entity.ConferencePriority;
-import com.example.ADSDemoProject.domain.conference.entity.ConferenceType;
+import com.example.ADSDemoProject.conference.domain.Conference;
+import com.example.ADSDemoProject.conference.domain.ConferencePriority;
+import com.example.ADSDemoProject.conference.domain.ConferenceType;
 import com.example.ADSDemoProject.utils.exception.InvalidRequestException;
 import com.example.ADSDemoProject.utils.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ConferenceService {
@@ -42,7 +43,7 @@ public class ConferenceService {
     }
 
     public List<Conference> findAllConferenceWithCriteria(Sort sort) {
-        if (sort == null){
+        if (Objects.isNull(sort)){
             return conferenceRepository.findAll();
         }else {
             return conferenceRepository.findAll(sort);

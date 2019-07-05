@@ -1,8 +1,8 @@
-package com.example.ADSDemoProject.domain.conference;
+package com.example.ADSDemoProject.conference;
 
-import com.example.ADSDemoProject.domain.conference.entity.Conference;
-import com.example.ADSDemoProject.domain.conference.entity.ConferencePriority;
-import com.example.ADSDemoProject.domain.conference.entity.ConferenceType;
+import com.example.ADSDemoProject.conference.domain.Conference;
+import com.example.ADSDemoProject.conference.domain.ConferencePriority;
+import com.example.ADSDemoProject.conference.domain.ConferenceType;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
