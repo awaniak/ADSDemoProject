@@ -3,7 +3,6 @@ package com.example.ADSDemoProject.domain.conference;
 
 import com.example.ADSDemoProject.utils.exception.InvalidRequestException;
 import com.example.ADSDemoProject.utils.exception.ResourceNotFoundException;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
