@@ -1,10 +1,12 @@
 package com.example.ADSDemoProject.domain.conference.unit;
 
-import com.example.ADSDemoProject.conference.ConferenceRepository;
+import com.example.ADSDemoProject.conference.repository.ConferencePriorityRepository;
+import com.example.ADSDemoProject.conference.repository.ConferenceRepository;
 import com.example.ADSDemoProject.conference.ConferenceService;
 import com.example.ADSDemoProject.conference.domain.Conference;
 import com.example.ADSDemoProject.conference.domain.ConferencePriority;
 import com.example.ADSDemoProject.conference.domain.ConferenceType;
+import com.example.ADSDemoProject.conference.repository.ConferenceTypeRepository;
 import com.example.ADSDemoProject.utils.exception.InvalidRequestException;
 import com.example.ADSDemoProject.utils.exception.ResourceNotFoundException;
 import org.junit.Before;
@@ -14,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -38,14 +41,30 @@ public class ConferenceServiceTest {
     @InjectMocks
     private ConferenceService conferenceService;
 
+    private ConferencePriority PRIORITY_IMPORTANT;
+    private ConferencePriority PRIORITY_NOT_IMPORTANT;
+    private ConferenceType TYPE_PLANNING;
+    private ConferenceType TYPE_WORKSHOP;
+    private ConferenceType TYPE_RETROSPECTIVE;
+
+
     @Before
     public void setUp() {
+        PRIORITY_IMPORTANT = new ConferencePriority("IMPORTANT");
+        PRIORITY_NOT_IMPORTANT = new ConferencePriority("NOT_IMPORTANT");
+
+        TYPE_PLANNING = new ConferenceType("PLANNING");
+        TYPE_RETROSPECTIVE = new ConferenceType("RETROSPECTIVE");
+        TYPE_WORKSHOP = new ConferenceType("WORKSHOP");
+
         MockitoAnnotations.initMocks(this);
+
+
     }
 
     @Test
     public void should_invoke_repository_save_when_save_valid_object() {
-        Conference conferenceToSave = new Conference("test", "desc", ZonedDateTime.now(), ConferencePriority.NOT_IMPORTANT, ConferenceType.PLANNING);
+        Conference conferenceToSave = new Conference("test", "desc", ZonedDateTime.now(), PRIORITY_NOT_IMPORTANT, TYPE_PLANNING);
         when(conferenceRepository.save(Mockito.any())).thenReturn(conferenceToSave);
         conferenceService.save(conferenceToSave);
         verify(conferenceRepository, times(1)).save(Mockito.any());
@@ -53,7 +72,7 @@ public class ConferenceServiceTest {
 
     @Test(expected = InvalidRequestException.class)
     public void should_throw_exception_when_save_conference_with_existing_date() {
-        Conference conferenceToSave = new Conference("test", "desc", ZonedDateTime.now(), ConferencePriority.NOT_IMPORTANT, ConferenceType.PLANNING);
+        Conference conferenceToSave = new Conference("test", "desc", ZonedDateTime.now(), PRIORITY_NOT_IMPORTANT, TYPE_PLANNING);
         when(conferenceRepository.findByConferenceDateTime(Mockito.any())).thenReturn(Arrays.asList(conferenceMock));
         conferenceService.save(conferenceToSave);
     }

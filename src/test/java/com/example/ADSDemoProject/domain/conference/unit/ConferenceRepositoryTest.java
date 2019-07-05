@@ -1,9 +1,11 @@
 package com.example.ADSDemoProject.domain.conference.unit;
 
-import com.example.ADSDemoProject.conference.ConferenceRepository;
+import com.example.ADSDemoProject.conference.repository.ConferencePriorityRepository;
+import com.example.ADSDemoProject.conference.repository.ConferenceRepository;
 import com.example.ADSDemoProject.conference.domain.Conference;
 import com.example.ADSDemoProject.conference.domain.ConferencePriority;
 import com.example.ADSDemoProject.conference.domain.ConferenceType;
+import com.example.ADSDemoProject.conference.repository.ConferenceTypeRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,32 +31,54 @@ public class ConferenceRepositoryTest {
     @Autowired
     ConferenceRepository conferenceRepository;
 
+    @Autowired
+    ConferencePriorityRepository conferencePriorityRepository;
+
+    @Autowired
+    ConferenceTypeRepository conferenceTypeRepository;
+
     Conference conference;
     Conference conferenceToCompare;
 
-    private final String CONFERENCE_TITLE = "testTitle";
-    private final String DESCRIPTION = "desc";
-    private final ZonedDateTime DATE = ZonedDateTime.now();
-    private final ConferencePriority PRIORITY = ConferencePriority.IMPORTANT;
-    private final ConferenceType TYPE = ConferenceType.PLANNING;
+    private String CONFERENCE_TITLE = "testTitle";
+    private String DESCRIPTION = "desc";
+    private ZonedDateTime DATE = ZonedDateTime.now();
 
-    private final ZonedDateTime DATE_BEFORE = ZonedDateTime.now().minusDays(1);
-    private final ConferencePriority LOW_PRIORITY = ConferencePriority.NOT_IMPORTANT;
-    private final ConferenceType WORKSHOP_TYPE = ConferenceType.WORKSHOP;
+    private ConferencePriority PRIORITY_IMPORTANT;
+    private ConferencePriority PRIORITY_NOT_IMPORTANT;
+    private ConferenceType TYPE_PLANNING;
+    private ConferenceType TYPE_WORKSHOP;
+    private ConferenceType TYPE_RETROSPECTIVE;
 
-    private final String EDITED_TITLE = "editedTitle";
-    private final String EDITED_DESCRIPTION = "editeddesc";
-    private final ZonedDateTime EDITED_DATE = ZonedDateTime.now().plusDays(5);
-    private final ConferencePriority EDITED_PRIORITY = ConferencePriority.NOT_IMPORTANT;
-    private final ConferenceType EDITED_TYPE = ConferenceType.RETROSPECTIVE;
+    private ZonedDateTime DATE_BEFORE = ZonedDateTime.now().minusDays(1);
+    private String EDITED_TITLE = "editedTitle";
+    private String EDITED_DESCRIPTION = "editeddesc";
+    private ZonedDateTime EDITED_DATE = ZonedDateTime.now().plusDays(5);
 
 
     @Before
     public void setUp(){
-        conference = new Conference(CONFERENCE_TITLE, DESCRIPTION, DATE, PRIORITY, TYPE);
-        conferenceToCompare = new Conference(CONFERENCE_TITLE, DESCRIPTION, DATE_BEFORE, LOW_PRIORITY, WORKSHOP_TYPE);
+        PRIORITY_IMPORTANT = new ConferencePriority("IMPORTANT");
+        PRIORITY_NOT_IMPORTANT = new ConferencePriority("NOT_IMPORTANT");
+
+        PRIORITY_IMPORTANT = conferencePriorityRepository.save(PRIORITY_IMPORTANT);
+        PRIORITY_NOT_IMPORTANT = conferencePriorityRepository.save(PRIORITY_NOT_IMPORTANT);
+
+        TYPE_PLANNING = new ConferenceType("PLANNING");
+        TYPE_RETROSPECTIVE = new ConferenceType("RETROSPECTIVE");
+        TYPE_WORKSHOP = new ConferenceType("WORKSHOP");
+
+        TYPE_PLANNING = conferenceTypeRepository.save(TYPE_PLANNING);
+        TYPE_RETROSPECTIVE = conferenceTypeRepository.save(TYPE_RETROSPECTIVE);
+        TYPE_WORKSHOP = conferenceTypeRepository.save(TYPE_RETROSPECTIVE);
+
+
+        conference = new Conference(CONFERENCE_TITLE, DESCRIPTION, DATE, PRIORITY_IMPORTANT, TYPE_PLANNING);
+        conferenceToCompare = new Conference(CONFERENCE_TITLE, DESCRIPTION, DATE_BEFORE, PRIORITY_NOT_IMPORTANT, TYPE_WORKSHOP);
         conferenceRepository.save(conference);
         conferenceRepository.save(conferenceToCompare);
+
+
 
     }
 
@@ -90,8 +114,8 @@ public class ConferenceRepositoryTest {
         conferenceToEdit.setTitle(EDITED_TITLE);
         conferenceToEdit.setConferenceDateTime(EDITED_DATE);
         conferenceToEdit.setDescription(EDITED_DESCRIPTION);
-        conferenceToEdit.setPriority(EDITED_PRIORITY);
-        conferenceToEdit.setType(EDITED_TYPE);
+        conferenceToEdit.setPriority(PRIORITY_NOT_IMPORTANT);
+        conferenceToEdit.setType(TYPE_RETROSPECTIVE);
         Conference editedConference = conferenceRepository.save(conferenceToEdit);
 
         Optional<Conference> optionalEditedConference = conferenceRepository.findById(editedConference.getId());
@@ -112,7 +136,7 @@ public class ConferenceRepositoryTest {
         Optional<Conference> optionalConference = conferenceRepository.findById(conference.getId());
         assertThat(optionalConference.isPresent(), is(false));
 
-        conference = conferenceRepository.save(new Conference(CONFERENCE_TITLE, DESCRIPTION, DATE, PRIORITY, TYPE));
+        conference = conferenceRepository.save(new Conference(CONFERENCE_TITLE, DESCRIPTION, DATE, PRIORITY_IMPORTANT, TYPE_PLANNING));
     }
 
     @Test

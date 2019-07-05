@@ -1,8 +1,8 @@
-package com.example.ADSDemoProject.conference.domain.repository;
+package com.example.ADSDemoProject.conference.repository;
 
-import com.example.ADSDemoProject.conference.domain.Conference;
+import com.example.ADSDemoProject.conference.domain.ConferenceType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public class ConferenceTypeRepository extends JpaRepository<Conference, Long> {
+public interface ConferenceTypeRepository extends JpaRepository<ConferenceType, Long> {
 
 }

@@ -1,12 +1,15 @@
 package com.example.ADSDemoProject.domain.conference.integration;
 
 
-import com.example.ADSDemoProject.conference.ConferenceRepository;
+import com.example.ADSDemoProject.conference.repository.ConferencePriorityRepository;
+import com.example.ADSDemoProject.conference.repository.ConferenceRepository;
 import com.example.ADSDemoProject.conference.domain.Conference;
 import com.example.ADSDemoProject.conference.domain.ConferencePriority;
 import com.example.ADSDemoProject.conference.domain.ConferenceType;
+import com.example.ADSDemoProject.conference.repository.ConferenceTypeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +39,44 @@ public class ConferenceAddTest {
     private ConferenceRepository conferenceRepository;
 
     @Autowired
+    ConferencePriorityRepository conferencePriorityRepository;
+
+    @Autowired
+    ConferenceTypeRepository conferenceTypeRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
+
 
     private final String url = "/conference";
 
+    private ConferencePriority PRIORITY_IMPORTANT;
+    private ConferencePriority PRIORITY_NOT_IMPORTANT;
+    private ConferenceType TYPE_PLANNING;
+    private ConferenceType TYPE_WORKSHOP;
+    private ConferenceType TYPE_RETROSPECTIVE;
+
+    @Before
+    public void setUp(){
+        PRIORITY_IMPORTANT = new ConferencePriority("IMPORTANT");
+        PRIORITY_NOT_IMPORTANT = new ConferencePriority("NOT_IMPORTANT");
+
+        PRIORITY_IMPORTANT = conferencePriorityRepository.save(PRIORITY_IMPORTANT);
+        PRIORITY_NOT_IMPORTANT = conferencePriorityRepository.save(PRIORITY_NOT_IMPORTANT);
+
+        TYPE_PLANNING = new ConferenceType("PLANNING");
+        TYPE_RETROSPECTIVE = new ConferenceType("RETROSPECTIVE");
+        TYPE_WORKSHOP = new ConferenceType("WORKSHOP");
+
+        TYPE_PLANNING = conferenceTypeRepository.save(TYPE_PLANNING);
+        TYPE_RETROSPECTIVE = conferenceTypeRepository.save(TYPE_RETROSPECTIVE);
+        TYPE_WORKSHOP = conferenceTypeRepository.save(TYPE_RETROSPECTIVE);
+
+    }
+
     @Test
     public void should_add_conference() throws Exception {
-        Conference conferenceToAdd = new Conference("hallo", "desc", ZonedDateTime.now(), ConferencePriority.NOT_IMPORTANT, ConferenceType.WORKSHOP);
+        Conference conferenceToAdd = new Conference("hallo", "desc", ZonedDateTime.now(), PRIORITY_NOT_IMPORTANT, TYPE_WORKSHOP);
         long sizeBeforeAdd = conferenceRepository.count();
         MvcResult result = mvc.perform(
                 post(url).content(objectMapper.writeValueAsString(conferenceToAdd)).contentType(MediaType.APPLICATION_JSON))
@@ -59,7 +93,7 @@ public class ConferenceAddTest {
 
     @Test
     public void should_not_add_conference_with_same_date() throws Exception {
-        Conference conferenceToAdd = new Conference("hallo", "desc", ZonedDateTime.now(), ConferencePriority.NOT_IMPORTANT, ConferenceType.WORKSHOP);
+        Conference conferenceToAdd = new Conference("hallo", "desc", ZonedDateTime.now(), PRIORITY_NOT_IMPORTANT, TYPE_WORKSHOP);
         long sizeBeforeAdd = conferenceRepository.count();
         MvcResult result = mvc.perform(
                 post(url).content(objectMapper.writeValueAsString(conferenceToAdd)).contentType(MediaType.APPLICATION_JSON))

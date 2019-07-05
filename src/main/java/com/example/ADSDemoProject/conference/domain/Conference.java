@@ -4,10 +4,7 @@ package com.example.ADSDemoProject.conference.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
@@ -27,8 +24,10 @@ public class Conference {
 
     private ZonedDateTime conferenceDateTime;
 
+    @ManyToOne
     private ConferencePriority priority;
 
+    @ManyToOne
     private ConferenceType type;
 
     public Conference(@Size(min = 3, max = 20) String title, String description, ZonedDateTime conferenceDateTime, ConferencePriority priority, ConferenceType type) {
